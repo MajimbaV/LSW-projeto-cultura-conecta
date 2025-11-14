@@ -12,6 +12,24 @@
     <p>Agenda de eventos culturais da cidade.</p>
   </header>
   <main>
+    <section id="filters">
+      <h3>Filtrar</h3>
+      <div>
+        <label for="categoryFilter">Categoria:</label>
+        <select id="categoryFilter">
+        </select>
+      </div>
+      <div>
+        <label for="dateFilterMin">Data Mínima:</label>
+        <input type="date" id="dateFilterMin" class="dateFilter"/>
+        <label for="dateFilterMax">Data Máxima:</label>
+        <input type="date" id="dateFilterMax" class="dateFilter"/>
+      </div>
+      <div>
+        <input type="text" id="searchInput" placeholder="Buscar eventos..." />
+      </div>
+      <button id="clearFiltersBttn">Limpar Filtros</button>
+    </section>
     <section class="content">
       <h2>Eventos</h2>
 
