@@ -6,6 +6,47 @@ main { flex: 1; padding: 2rem; }
 footer { text-align: center; padding: 1rem; font-size: 0.9rem; background: #fafafa; border-top: 1px solid #e0e0e0; }
 
 
+#filters{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+#categoryFilter{
+    padding: 0.3rem;
+    font-size: 1rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+#searchInput{
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.dateFilter{
+    padding: 0.3rem;
+    font-size: 1rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+#clearFiltersBttn{
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    max-width: 200px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+}
+
 .event-card{
     margin: 1rem 0;
     padding: 1.5rem 1rem;
