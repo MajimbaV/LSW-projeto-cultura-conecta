@@ -10,6 +10,8 @@ const dados = [
 
 
 function createEventCard(event){
+    if(!event || typeof event !== "object" || event === null) return null;
+
     // Cria o html do card 
     const cardDiv = document.createElement("div")
     cardDiv.classList.add("event-card")
