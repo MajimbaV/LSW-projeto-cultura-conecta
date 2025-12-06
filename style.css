@@ -4,3 +4,70 @@ header { background: #fff; padding: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 main { flex: 1; padding: 2rem; }
 .content { background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
 footer { text-align: center; padding: 1rem; font-size: 0.9rem; background: #fafafa; border-top: 1px solid #e0e0e0; }
+
+
+#filters{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+#categoryFilter{
+    padding: 0.3rem;
+    font-size: 1rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+#searchInput{
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.dateFilter{
+    padding: 0.3rem;
+    font-size: 1rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+#clearFiltersBttn{
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    max-width: 200px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+}
+
+.event-card{
+    margin: 1rem 0;
+    padding: 1.5rem 1rem;
+    border: 1px solid gray;
+    border-radius: 20px;
+    box-shadow: 2px 2px black;
+}
+
+.event-category{
+    font-size: 15px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid gray;
+}
+
+.event-title{
+    font-size: 2em;
+}
+
+.event-actions{
+    margin-top: 1rem;
+    display: flex;
+    gap: 10px;
+    justify-content: end;
+}
