@@ -11,6 +11,30 @@
     <h1>Projeto 02 - Cultura Conecta</h1>
     <p>Agenda de eventos culturais da cidade.</p>
   </header>
+
+  <form action="" class="event-form hidden">
+    <div class="input-block">
+      <label for="form-titulo">Título:</label>
+      <input type="text" name="form-titulo" id="form-titulo">
+    </div>
+
+    <div class="input-block">
+      <label for="form-category">Categoria:</label>
+      <select name="form-category" id="form-category">
+        <option value="lazer">Lazer</option>
+        <option value="saude">Saúde</option>
+      </select>
+    </div>
+
+    <div class="input-block">
+      <label for="form-date">Data do Evento:</label>
+      <input type="date" name="form-date" id="form-date">
+    </div>
+  </form>
+
+  <div class="form-actions-block">
+    <button type="submit">Salvar</button>
+  </div>
   <main>
     <section id="filters">
       <h3>Filtrar</h3>
