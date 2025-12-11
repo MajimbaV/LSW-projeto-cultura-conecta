@@ -160,6 +160,18 @@ function filterEvents(){
 }
 
 
+// Funções do Formulário
+
+function getEventFormData(form){
+    const data = {
+        titulo: form.querySelector("#form-title").value,
+        categoria: form.querySelector("#form-category").value,
+        data: form.querySelector("form-date").value
+    }
+
+    return data
+}
+
 // Inicialização da Página, chamando as funções necessárias
 
 function initialize(){
