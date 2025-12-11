@@ -160,7 +160,25 @@ function filterEvents(){
 }
 
 
-// Funções do Formulário
+// Funções do Formulário e Criação/Edição dos Dados
+
+function createNewEvent(eventData){
+    if (!eventData.titulo || !eventData.data){
+        alert("Dados Incompletos")
+        return
+    }
+    
+    const newEvent = {
+        id: getNextId(),
+        titulo: eventData.titulo,
+        categoria: eventData.categoria,
+        data: eventData.data,
+        curtidas: 0,
+    }
+
+    dados.push(newEvent);
+    renderEvents(dados);
+}
 
 function getEventFormData(form){
     const data = {
