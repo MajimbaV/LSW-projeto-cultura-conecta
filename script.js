@@ -60,6 +60,7 @@ function createEventCard(event){
     const cardEditBttn = document.createElement("button")
     cardEditBttn.classList.add("edit-bttn") 
     cardEditBttn.textContent = "Editar"
+    cardEditBttn.addEventListener("click", handleEditButtonClick)
 
     // Contagem de Likes
     const cardLikeCount = document.createElement("span")
@@ -225,6 +226,18 @@ function getEventFormData(form){
 
     return data
 }
+
+function handleEditButtonClick(event){
+    const cardDiv = event.target.closest(".event-card");
+    if(!cardDiv) return;
+
+    const eventId = parseInt(cardDiv.dataset.eventId);
+    const eventData = dados.find(e => e.id === eventId);
+    if(!eventData) return;
+
+    openEventForm("edit", eventData);
+}
+
 
 function handleEventFormSubmit(event){
     event.preventDefault();
