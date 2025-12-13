@@ -21,6 +21,13 @@ footer { text-align: center; padding: 1rem; font-size: 0.9rem; background: #fafa
     border-radius: 5px;
 }
 
+#likesFilter {
+    padding: 0.3rem;
+    font-size: 1rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
 #searchInput{
     width: 100%;
     padding: 0.5rem;
