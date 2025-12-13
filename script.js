@@ -163,6 +163,22 @@ function filterEvents(){
 
 // Funções do Formulário e Criação/Edição dos Dados
 
+function openEventForm(mode = "create", eventData = null){
+    resetEventForm();
+
+    if(mode === "edit" && eventData){
+        toggleEventForm();
+        eventForm.querySelector("#form-title").value = eventData.titulo;
+        eventForm.querySelector("#form-category").value = eventData.categoria;
+        eventForm.querySelector("#form-date").value = eventData.data;
+        return;
+    }
+    
+    toggleEventForm();
+
+
+}
+
 function resetEventForm(){
     eventForm.querySelector("#form-title").value = "";
     eventForm.querySelector("#form-category").value = "";
