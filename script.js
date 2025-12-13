@@ -240,6 +240,13 @@ function editEvent(eventId, eventNewData){
     return 1;
 }
 
+function deleteEvent(eventId){
+    const eventIndex = dados.findIndex(e => e.id === eventId);
+    if(eventIndex === -1) return 0;
+    dados.splice(eventIndex, 1);
+    return 1;
+}
+
 function getEventFormData(form){
     const data = {
         titulo: form.querySelector("#form-title").value,
