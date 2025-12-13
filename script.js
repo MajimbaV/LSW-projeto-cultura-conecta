@@ -6,6 +6,7 @@ const searchInput = document.querySelector("#searchInput")
 const dateFilterMin = document.querySelector("#dateFilterMin")
 const dateFilterMax = document.querySelector("#dateFilterMax")
 const clearFiltersBttn = document.querySelector("#clearFiltersBttn")
+const eventForm = document.querySelector("#event-form")
 
 const dados = [
     {id: 1, titulo: "Campeonato de Stop", categoria: "Lazer", data:"2025-12-10", curtidas: 0},
@@ -161,6 +162,10 @@ function filterEvents(){
 
 
 // Funções do Formulário e Criação/Edição dos Dados
+
+function showEventForm(){
+
+}
 
 function getNextId(){
     if(dados.length === 0 ) return 1;
