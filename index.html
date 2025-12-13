@@ -15,7 +15,7 @@
 
   <form id="event-form" class="hidden" data-actionType="create" data-editingEventId="null">
     <h2 id="form-title-header"></h2>
-    
+
     <div class="input-block">
       <label for="form-title">Título:</label>
       <input type="text" name="form-title" id="form-title" required>
@@ -38,7 +38,8 @@
     </div>
     
     <div class="form-actions-block">
-      <button type="submit">Salvar</button>
+      <button type="submit" name="action" value="save">Salvar</button>
+      <button type="submit" name="action" value="delete">Remover</button>
     </div>
 
   </form>
