@@ -172,10 +172,10 @@ function openEventForm(mode = "create", eventData = null){
     resetEventForm();
 
     if(mode === "edit" && eventData){
-        toggleEventForm();
         eventForm.dataset.actionType = "edit";
         eventForm.dataset.editingEventId = eventData.id;
-
+        
+        toggleEventForm();
         eventForm.querySelector("#form-title-header").textContent = `Editar Evento #${eventData.id}`;
         eventForm.querySelector("#form-title").value = eventData.titulo;
         eventForm.querySelector("#form-category").value = eventData.categoria;
@@ -184,9 +184,9 @@ function openEventForm(mode = "create", eventData = null){
         return;
     }
 
-    toggleEventForm();
     eventForm.dataset.actionType = "create";
     eventForm.dataset.editingEventId = "null";
+    toggleEventForm();
     eventForm.querySelector("#form-title-header").textContent = "Criar Novo Evento";
 }
 
@@ -198,6 +198,13 @@ function resetEventForm(){
 
 function toggleEventForm(){
     eventForm.classList.toggle("hidden");
+    const deleteBttn = eventForm.querySelector("button[type='submit'][value='delete']");
+
+    if (eventForm.dataset.actionType === "edit") {
+        deleteBttn.classList.remove("hidden"); 
+        return;
+    }
+    deleteBttn.classList.add("hidden");
 }
 
 function getNextId(){
