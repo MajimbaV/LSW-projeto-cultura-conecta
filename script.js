@@ -1,6 +1,6 @@
 // Seleção dos elementos do DOM necessários
 
-const contentDiv = document.querySelector(".content")
+const cardsContainer = document.querySelector(".cards-container")
 const filterSelect = document.querySelector("#categoryFilter")
 const searchInput = document.querySelector("#searchInput")
 const dateFilterMin = document.querySelector("#dateFilterMin")
@@ -84,12 +84,12 @@ function createEventCard(event){
 
 function renderEvents(eventArray){
     // Limpa o conteúdo atual
-    contentDiv.innerHTML = ""
+    cardsContainer.innerHTML = ""
 
     eventArray.forEach(event => {
         const card = createEventCard(event)
         // Adiciona o card criado a div de conteúdo
-        contentDiv.appendChild(card)
+        cardsContainer.appendChild(card)
     });
 }
 
