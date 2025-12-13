@@ -13,15 +13,20 @@
   </header>
   <main>
     <section id="filters">
-      <h3>Filtrar</h3>
+      <h3>Filtros</h3>
       <div>
         <label for="categoryFilter">Categoria:</label>
         <select id="categoryFilter">
         </select>
       </div>
       <div>
-        <label for="likesFilter">Popularidade:</label>
-        <input type="checkbox" id="likesFilter">
+        <label for="orderBy">Ordenar Por:</label>
+        <select id="orderBy">
+          <option value="">Padrão</option>
+          <option value="likes">Curtidas</option>
+          <option value="name">Nome</option>
+          <option value="date">Data</option>
+        </select>
       </div>
       <div>
         <label for="dateFilterMin">Data Mínima:</label>

@@ -21,7 +21,7 @@ footer { text-align: center; padding: 1rem; font-size: 0.9rem; background: #fafa
     border-radius: 5px;
 }
 
-#likesFilter {
+#orderBy {
     padding: 0.3rem;
     font-size: 1rem;
     border: 1px solid gray;
