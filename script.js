@@ -181,7 +181,7 @@ function openEventForm(mode = "create", eventData = null){
 
 function resetEventForm(){
     eventForm.querySelector("#form-title").value = "";
-    eventForm.querySelector("#form-category").value = "";
+    eventForm.querySelector("#form-category").value = "Geral";
     eventForm.querySelector("#form-date").value = "";
 }
 
