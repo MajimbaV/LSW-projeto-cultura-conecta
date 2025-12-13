@@ -10,7 +10,7 @@ const clearFiltersBttn = document.querySelector("#clearFiltersBttn")
 
 const dados = [
     {id: 1, titulo: "Campeonato de Stop", categoria: "Lazer", data:"2025-12-10", curtidas: 4, liked: false}, 
-    {id: 2, titulo: "Projetos de LSW", categoria: "Educação", data:"2025-12-18", curtidas: 1, liked: false},
+    {id: 2, titulo: "Projetos de LSW", categoria: "Educação", data:"2024-12-18", curtidas: 1, liked: false},
     {id: 3, titulo: "Carnaval", categoria: "Lazer", data:"2026-02-13", curtidas: 2, liked: false},
     {id: 4, titulo: "Dia D para Vacinação", categoria: "Saúde", data:"2026-04-05", curtidas: 1, liked: false},
 ]
@@ -153,6 +153,13 @@ function orderBy(event) {
     switch (orderBy) {
         case "likes":
             ordered.sort((a, b) => b.curtidas - a.curtidas);
+            break;
+        case "name":
+            ordered.sort((a, b) => a.titulo.localeCompare(b.titulo));
+            break;
+        case "date":
+            ordered.sort((a, b) => new Date(a.data) - new Date(b.data));
+            break;
     }
     return ordered
 }
