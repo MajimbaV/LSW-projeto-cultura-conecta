@@ -224,6 +224,16 @@ function getEventFormData(form){
     return data
 }
 
+function handleEventFormSubmit(event){
+    event.preventDefault();
+
+    const formData = getEventFormData(eventForm);
+    const result = createNewEvent(formData);
+    if(result){
+        toggleEventForm();
+    }
+}
+
 // Inicialização da Página, chamando as funções necessárias
 
 function initialize(){
@@ -236,6 +246,7 @@ function initialize(){
     dateFilterMax.addEventListener("change", event => updateFilters("maxDate", event.target.value));
     clearFiltersBttn.addEventListener("click", clearFilters);
     createEventBttn.addEventListener("click", () => openEventForm("create"));
+    eventForm.addEventListener("submit", handleEventFormSubmit);
 }
 
 initialize();
