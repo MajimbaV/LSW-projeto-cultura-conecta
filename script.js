@@ -55,21 +55,31 @@ function createEventCard(event){
     const cardEditBttn = document.createElement("button")
     cardEditBttn.classList.add("edit-bttn") 
     cardEditBttn.textContent = "Editar"
+    
+    // Botão para Curtir
+    const cardLikeBttn = document.createElement("button")
+    cardLikeBttn.classList.add("like-bttn") 
+    cardLikeBttn.textContent = "Curtir"
+    
+    //Função de curtir
+    let likedThis = 0
+    cardLikeBttn.addEventListener("click", () => {
+        if (likedThis == 0) {
+            event.curtidas++
+            cardLikeCount.textContent = event.curtidas
+            likedThis = 1
+        }
+    })
 
     // Contagem de Likes
     const cardLikeCount = document.createElement("span")
     cardLikeCount.classList.add("like-count")
     cardLikeCount.textContent = event.curtidas
 
-    // Botão para Curtir
-    const cardLikeBttn = document.createElement("button")
-    cardLikeBttn.classList.add("like-bttn") 
-    cardLikeBttn.textContent = "Like"
-
     // Adiciona os elementos de ação a div de ação
     cardActionsDiv.appendChild(cardEditBttn)
-    cardActionsDiv.appendChild(cardLikeCount)
     cardActionsDiv.appendChild(cardLikeBttn)
+    cardActionsDiv.appendChild(cardLikeCount)
 
 
     //Adiciona os elementos a div do card
