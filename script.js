@@ -96,6 +96,10 @@ function renderEvents(eventArray){
 
 // Funções para Filtragem dos Eventos
 
+function toggleEventForm(){
+    eventForm.classList.toggle("hidden");
+}
+
 function populateCategoryFilter(){
     // Extrai as categorias únicas dos eventos
     const categorias = ["todas", ...new Set(dados.map(e => e.categoria.trim()).filter(Boolean).map(c => c.toLowerCase()))];
