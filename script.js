@@ -173,10 +173,7 @@ function openEventForm(mode = "create", eventData = null){
         eventForm.querySelector("#form-date").value = eventData.data;
         return;
     }
-    
     toggleEventForm();
-
-
 }
 
 function resetEventForm(){
@@ -198,7 +195,7 @@ function getNextId(){
 function createNewEvent(eventData){
     if (!eventData.titulo || !eventData.data){
         alert("Dados Incompletos")
-        return
+        return 0;
     }
     
     const newEvent = {
@@ -211,6 +208,7 @@ function createNewEvent(eventData){
 
     dados.push(newEvent);
     clearFilters();
+    return 1;
 }
 
 function getEventFormData(form){
