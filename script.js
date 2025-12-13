@@ -221,8 +221,6 @@ function createNewEvent(eventData){
     }
 
     dados.push(newEvent);
-    clearFilters();
-    populateCategoryFilter();
     return 1;
 }
 
@@ -271,12 +269,28 @@ function handleEditButtonClick(event){
 
 function handleEventFormSubmit(event){
     event.preventDefault();
-
     const formData = getEventFormData(eventForm);
-    const result = createNewEvent(formData);
+    let result = 0;
+    
+    if (event.submitter.value === "delete") {
+        const editingEventId = parseInt(eventForm.dataset.editingEventId);
+        result = deleteEvent(editingEventId);
+    }
+    else if (eventForm.dataset.actionType === "edit"){
+        const editingEventId = parseInt(eventForm.dataset.editingEventId);
+        result = editEvent(editingEventId, formData);
+    }else {
+        result = createNewEvent(formData);
+    }
+    
     if(result){
         toggleEventForm();
+        clearFilters();
+        populateCategoryFilter();
+        return
     }
+
+    alert("Erro ao processar o formulário");
 }
 
 // Inicialização da Página, chamando as funções necessárias
