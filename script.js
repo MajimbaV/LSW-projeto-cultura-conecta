@@ -174,8 +174,9 @@ function openEventForm(mode = "create", eventData = null){
     if(mode === "edit" && eventData){
         toggleEventForm();
         eventForm.dataset.actionType = "edit";
+        eventForm.dataset.editingEventId = eventData.id;
 
-        eventForm.querySelector("#form-title-header").textContent = "Editar Evento";
+        eventForm.querySelector("#form-title-header").textContent = `Editar Evento #${eventData.id}`;
         eventForm.querySelector("#form-title").value = eventData.titulo;
         eventForm.querySelector("#form-category").value = eventData.categoria;
         eventForm.querySelector("#form-date").value = eventData.data;
@@ -185,6 +186,7 @@ function openEventForm(mode = "create", eventData = null){
 
     toggleEventForm();
     eventForm.dataset.actionType = "create";
+    eventForm.dataset.editingEventId = "null";
     eventForm.querySelector("#form-title-header").textContent = "Criar Novo Evento";
 }
 
