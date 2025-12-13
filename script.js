@@ -204,7 +204,7 @@ function createNewEvent(eventData){
     const newEvent = {
         id: getNextId(),
         titulo: eventData.titulo,
-        categoria: eventData.categoria,
+        categoria: eventData.categoria ? eventData.categoria : "Geral",
         data: eventData.data,
         curtidas: 0,
     }
