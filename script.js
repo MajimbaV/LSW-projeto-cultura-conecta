@@ -235,6 +235,7 @@ function initialize(){
     dateFilterMin.addEventListener("change", event => updateFilters("minDate", event.target.value));
     dateFilterMax.addEventListener("change", event => updateFilters("maxDate", event.target.value));
     clearFiltersBttn.addEventListener("click", clearFilters);
+    createEventBttn.addEventListener("click", () => openEventForm("create"));
 }
 
 initialize();
