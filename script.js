@@ -7,6 +7,9 @@ const dateFilterMin = document.querySelector("#dateFilterMin")
 const dateFilterMax = document.querySelector("#dateFilterMax")
 const clearFiltersBttn = document.querySelector("#clearFiltersBttn")
 const eventForm = document.querySelector("#event-form")
+const createEventBttn = document.querySelector("#createEventBttn")
+
+// Dados iniciais e configuração dos filtros
 
 const dados = [
     {id: 1, titulo: "Campeonato de Stop", categoria: "Lazer", data:"2025-12-10", curtidas: 0},
