@@ -96,16 +96,6 @@ function renderEvents(eventArray){
 
 // Funções para Filtragem dos Eventos
 
-function resetEventForm(){
-    eventForm.querySelector("#form-title").value = "";
-    eventForm.querySelector("#form-category").value = "";
-    eventForm.querySelector("#form-date").value = "";
-}
-
-function toggleEventForm(){
-    eventForm.classList.toggle("hidden");
-}
-
 function populateCategoryFilter(){
     // Extrai as categorias únicas dos eventos
     const categorias = ["todas", ...new Set(dados.map(e => e.categoria.trim()).filter(Boolean).map(c => c.toLowerCase()))];
@@ -172,6 +162,16 @@ function filterEvents(){
 
 
 // Funções do Formulário e Criação/Edição dos Dados
+
+function resetEventForm(){
+    eventForm.querySelector("#form-title").value = "";
+    eventForm.querySelector("#form-category").value = "";
+    eventForm.querySelector("#form-date").value = "";
+}
+
+function toggleEventForm(){
+    eventForm.classList.toggle("hidden");
+}
 
 function getNextId(){
     if(dados.length === 0 ) return 1;
