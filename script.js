@@ -96,6 +96,12 @@ function renderEvents(eventArray){
 
 // Funções para Filtragem dos Eventos
 
+function resetEventForm(){
+    eventForm.querySelector("#form-title").value = "";
+    eventForm.querySelector("#form-category").value = "";
+    eventForm.querySelector("#form-date").value = "";
+}
+
 function toggleEventForm(){
     eventForm.classList.toggle("hidden");
 }
@@ -166,10 +172,6 @@ function filterEvents(){
 
 
 // Funções do Formulário e Criação/Edição dos Dados
-
-function showEventForm(){
-
-}
 
 function getNextId(){
     if(dados.length === 0 ) return 1;
