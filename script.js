@@ -183,7 +183,7 @@ function createNewEvent(eventData){
     }
 
     dados.push(newEvent);
-    renderEvents(dados);
+    clearFilters();
 }
 
 function getEventFormData(form){
@@ -210,4 +210,3 @@ function initialize(){
 }
 
 initialize();
-console.log(getNextId())
