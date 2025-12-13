@@ -211,6 +211,7 @@ function createNewEvent(eventData){
 
     dados.push(newEvent);
     clearFilters();
+    populateCategoryFilter();
     return 1;
 }
 
