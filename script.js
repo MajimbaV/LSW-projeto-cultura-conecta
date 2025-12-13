@@ -218,7 +218,7 @@ function getEventFormData(form){
     const data = {
         titulo: form.querySelector("#form-title").value,
         categoria: form.querySelector("#form-category").value,
-        data: form.querySelector("form-date").value
+        data: form.querySelector("#form-date").value
     }
 
     return data
