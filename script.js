@@ -35,6 +35,7 @@ function createEventCard(event){
     // Cria o html do card 
     const cardDiv = document.createElement("div")
     cardDiv.classList.add("event-card")
+    cardDiv.dataset.eventId = event.id;
 
     // Categoria do Evento
     const cardCategory = document.createElement("p")
