@@ -174,13 +174,15 @@ function openEventForm(mode = "create", eventData = null){
     if(mode === "edit" && eventData){
         toggleEventForm();
         eventForm.dataset.actionType = "edit";
+
         eventForm.querySelector("#form-title-header").textContent = "Editar Evento";
         eventForm.querySelector("#form-title").value = eventData.titulo;
         eventForm.querySelector("#form-category").value = eventData.categoria;
         eventForm.querySelector("#form-date").value = eventData.data;
+        
         return;
     }
-    
+
     toggleEventForm();
     eventForm.dataset.actionType = "create";
     eventForm.querySelector("#form-title-header").textContent = "Criar Novo Evento";
@@ -219,6 +221,20 @@ function createNewEvent(eventData){
     dados.push(newEvent);
     clearFilters();
     populateCategoryFilter();
+    return 1;
+}
+
+function editEvent(eventId, eventNewData){
+    if (!eventId || !eventNewData.titulo || !eventNewData.data){
+        return 0;
+    }
+
+    const eventIndex = dados.findIndex(e => e.id === eventId);
+    if(eventIndex === -1) return 0;
+
+    dados[eventIndex].titulo = eventNewData.titulo;
+    dados[eventIndex].categoria = eventNewData.categoria;
+    dados[eventIndex].data = eventNewData.data;
     return 1;
 }
 
