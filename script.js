@@ -162,6 +162,12 @@ function filterEvents(){
 
 // Funções do Formulário e Criação/Edição dos Dados
 
+function getNextId(){
+    if(dados.length === 0 ) return 1;
+    let maxID = dados.reduce((max, event) => event.id > max ? event.id : max, dados[0].id);
+    return maxID + 1;
+}
+
 function createNewEvent(eventData){
     if (!eventData.titulo || !eventData.data){
         alert("Dados Incompletos")
@@ -204,3 +210,4 @@ function initialize(){
 }
 
 initialize();
+console.log(getNextId())
