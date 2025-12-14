@@ -41,6 +41,35 @@ footer { text-align: center; padding: 1rem; font-size: 0.9rem; background: #fafa
     border-radius: 10px;
 }
 
+#event-form h2{
+    margin-bottom: 10px;
+}
+
+#event-form button{
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+#event-form .cancel-button{
+    background-color: #6c757d;
+}
+
+#event-form .save-button{
+    background-color: #28a745;
+}
+
+#event-form .delete-button{
+    background-color: #dc3545;
+}
+
+#event-form .delete-button.hidden{
+    display: none;
+}
+
 #filters{
     display: flex;
     flex-direction: column;
