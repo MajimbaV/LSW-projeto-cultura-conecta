@@ -8,6 +8,7 @@ const dateFilterMax = document.querySelector("#dateFilterMax")
 const clearFiltersBttn = document.querySelector("#clearFiltersBttn")
 const eventForm = document.querySelector("#event-form")
 const createEventBttn = document.querySelector("#createEventBttn")
+const cancelFormBttn = document.querySelector("#formCancelBttn")
 
 // Dados iniciais e configuração dos filtros
 
@@ -312,6 +313,7 @@ function initialize(){
     dateFilterMax.addEventListener("change", event => updateFilters("maxDate", event.target.value));
     clearFiltersBttn.addEventListener("click", clearFilters);
     createEventBttn.addEventListener("click", () => openEventForm("create"));
+    cancelFormBttn.addEventListener("click", toggleEventForm);
     eventForm.addEventListener("submit", handleEventFormSubmit);
 }
 
