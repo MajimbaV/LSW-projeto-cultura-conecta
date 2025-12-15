@@ -13,6 +13,11 @@ const cancelFormBttn = document.querySelector("#formCancelBttn")
 
 // Dados iniciais e configuração dos filtros
 
+const default_dados = [
+    {titulo: "Tributos", categoria: "Lazer", data: "2026-11-15", curtidas: 10, id: 1, liked: false},
+    {titulo: "Carnaval", categoria: "Cultura", data: "2026-02-20", curtidas: 25, id: 2, liked: false},
+]
+
 const dados = [
     
 ]
@@ -66,6 +71,7 @@ function createEventCard(event){
     const cardLikeBttn = document.createElement("button")
     cardLikeBttn.classList.add("like-bttn") 
     cardLikeBttn.textContent = "Curtir"
+    if(event.liked) cardLikeBttn.classList.add("liked");
     
     //Função de curtir
     cardLikeBttn.addEventListener("click", () => {
@@ -349,6 +355,13 @@ function persistence(key, value) {
 
 function loadItens() {
     const numEvents = localStorage.length;
+    if(numEvents === 0){
+        default_dados.forEach(event => {
+            persistence("newEvent" + String(event.id), event);
+        })
+        loadItens();
+
+    }
     for (let i = 1; i <= numEvents; i++) {
         if (localStorage.getItem("newEvent" + i) === null) {
             break;
