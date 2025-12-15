@@ -21,6 +21,13 @@ footer { text-align: center; padding: 1rem; font-size: 0.9rem; background: #fafa
     border-radius: 5px;
 }
 
+#orderBy {
+    padding: 0.3rem;
+    font-size: 1rem;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
 #searchInput{
     width: 100%;
     padding: 0.5rem;
@@ -70,4 +77,27 @@ footer { text-align: center; padding: 1rem; font-size: 0.9rem; background: #fafa
     display: flex;
     gap: 10px;
     justify-content: end;
+    align-items: center;
+}
+
+.like-bttn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    max-width: 200px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+}
+
+.edit-bttn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    max-width: 200px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
 }
