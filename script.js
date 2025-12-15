@@ -2,6 +2,7 @@
 
 const cardsContainer = document.querySelector(".cards-container")
 const filterSelect = document.querySelector("#categoryFilter")
+const orderSelect = document.querySelector("#orderBy")
 const searchInput = document.querySelector("#searchInput")
 const dateFilterMin = document.querySelector("#dateFilterMin")
 const dateFilterMax = document.querySelector("#dateFilterMax")
@@ -18,6 +19,7 @@ const dados = [
 
 const defaultFilters = [
     {type: "categoria", value: "todas"},
+    {type: "ordenacao", value: ""},
     {type: "titulo", value: ""},
     {type: "minDate", value: null},
     {type: "maxDate", value: null}
@@ -58,22 +60,31 @@ function createEventCard(event){
     const cardEditBttn = document.createElement("button")
     cardEditBttn.classList.add("edit-bttn") 
     cardEditBttn.textContent = "Editar"
-    cardEditBttn.addEventListener("click", handleEditButtonClick)
+    
+    // Botão para Curtir
+    const cardLikeBttn = document.createElement("button")
+    cardLikeBttn.classList.add("like-bttn") 
+    cardLikeBttn.textContent = "Curtir"
+    
+    //Função de curtir
+    cardLikeBttn.addEventListener("click", () => {
+        if (!event.liked) { 
+            event.curtidas++
+            cardLikeCount.textContent = event.curtidas
+            event.liked = true
+            filterEvents()
+        }
+    })
 
     // Contagem de Likes
     const cardLikeCount = document.createElement("span")
     cardLikeCount.classList.add("like-count")
     cardLikeCount.textContent = event.curtidas
 
-    // Botão para Curtir
-    const cardLikeBttn = document.createElement("button")
-    cardLikeBttn.classList.add("like-bttn") 
-    cardLikeBttn.textContent = "Like"
-
     // Adiciona os elementos de ação a div de ação
     cardActionsDiv.appendChild(cardEditBttn)
-    cardActionsDiv.appendChild(cardLikeCount)
     cardActionsDiv.appendChild(cardLikeBttn)
+    cardActionsDiv.appendChild(cardLikeCount)
 
 
     //Adiciona os elementos a div do card
@@ -123,6 +134,8 @@ function updateFilters(type, value){
 function clearFilters(){
     activeFilters = defaultFilters.map(f => ({...f}));
     filterSelect.value = "todas";
+    orderSelect.value = "";
+    popularityFilter.checked = false;
     searchInput.value = "";
     dateFilterMin.value = "";
     dateFilterMax.value = "";
@@ -132,6 +145,26 @@ function clearFilters(){
 function filterByCategory(event){
     const categoryFilter = activeFilters.find(f => f.type === "categoria").value;
     return categoryFilter === "todas" || event.categoria.toLowerCase() === categoryFilter;
+}
+
+function orderBy(event) {
+    const orderBy = activeFilters.find(f => f.type === "ordenacao").value;
+    if (!orderBy) {
+        return event
+    }
+    const ordered = [...event]
+    switch (orderBy) {
+        case "likes":
+            ordered.sort((a, b) => b.curtidas - a.curtidas);
+            break;
+        case "name":
+            ordered.sort((a, b) => a.titulo.localeCompare(b.titulo));
+            break;
+        case "date":
+            ordered.sort((a, b) => new Date(a.data) - new Date(b.data));
+            break;
+    }
+    return ordered
 }
 
 function filterBySearch(event){
@@ -154,12 +187,14 @@ function filterByMaxDate(event){
 }
 
 function filterEvents(){
-    const filteredEvents = dados.filter(event => {
+    let filteredEvents = dados.filter(event => {
         const matchesCategory = filterByCategory(event);
         const matchesSearch = filterBySearch(event);
         const matchesDate = filterByMinDate(event) && filterByMaxDate(event);
         return matchesCategory && matchesSearch && matchesDate;
     })
+
+    filteredEvents = orderBy(filteredEvents)
     renderEvents(filteredEvents)
 }
 
@@ -223,6 +258,7 @@ function createNewEvent(eventData){
         categoria: eventData.categoria ? eventData.categoria : "Geral",
         data: eventData.data,
         curtidas: 0,
+        liked: false,
     }
 
     persistence("newEvent" + String(getNextId()), newEvent);
@@ -325,6 +361,8 @@ function initialize(){
     populateCategoryFilter();
 
     filterSelect.addEventListener("change", event => updateFilters("categoria", event.target.value));
+    orderSelect.value = "";
+    orderSelect.addEventListener("change", event => updateFilters("ordenacao", event.target.value));
     searchInput.addEventListener("input", event => updateFilters("titulo", event.target.value));
     dateFilterMin.addEventListener("change", event => updateFilters("minDate", event.target.value));
     dateFilterMax.addEventListener("change", event => updateFilters("maxDate", event.target.value));
