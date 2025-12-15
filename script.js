@@ -13,10 +13,7 @@ const cancelFormBttn = document.querySelector("#formCancelBttn")
 // Dados iniciais e configuração dos filtros
 
 const dados = [
-    {id: 1, titulo: "Campeonato de Stop", categoria: "Lazer", data:"2025-12-10", curtidas: 0},
-    {id: 2, titulo: "Projetos de LSW", categoria: "Educação", data:"2025-12-18", curtidas: 0},
-    {id: 3, titulo: "Carnaval", categoria: "Lazer", data:"2026-02-13", curtidas: 0},
-    {id: 4, titulo: "Dia D para Vacinação", categoria: "Saúde", data:"2026-04-05", curtidas: 0},
+    
 ]
 
 const defaultFilters = [
@@ -228,6 +225,8 @@ function createNewEvent(eventData){
         curtidas: 0,
     }
 
+    persistence("newEvent" + String(getNextId()), newEvent);
+    
     dados.push(newEvent);
     return 1;
 }
@@ -303,7 +302,25 @@ function handleEventFormSubmit(event){
 
 // Inicialização da Página, chamando as funções necessárias
 
+function persistence(key, value) {
+    if (typeof(value) === "object") {
+        localStorage.setItem(key, JSON.stringify(value));
+    }
+}
+
+function loadItens() {
+    const numEvents = localStorage.length;
+    for (let i = 1; i < numEvents; i++) {
+        if (localStorage.getItem("newEvent" + i) === null) {
+            break;
+        }
+        const newItem = JSON.parse(localStorage.getItem("newEvent" + i));
+        dados.push(newItem);
+    }
+}
+
 function initialize(){
+    loadItens();
     renderEvents(dados)
     populateCategoryFilter();
 
