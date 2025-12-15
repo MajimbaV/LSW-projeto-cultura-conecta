@@ -11,6 +11,40 @@
     <h1>Projeto 02 - Cultura Conecta</h1>
     <p>Agenda de eventos culturais da cidade.</p>
   </header>
+
+
+  <form id="event-form" class="hidden" data-action-type="create" data-editing-event-id="null">
+    <h2 id="form-title-header"></h2>
+
+    <div class="input-block">
+      <label for="form-title">Título:</label>
+      <input type="text" name="form-title" id="form-title" required>
+    </div>
+
+    <div class="input-block">
+      <label for="form-category">Categoria:</label>
+      <select name="form-category" id="form-category" required>
+        <option value="Geral">Geral</option>
+        <option value="Lazer">Lazer</option>
+        <option value="Saúde">Saúde</option>
+        <option value="Educação">Educação</option>
+        <option value="Cultura">Cultura</option>
+      </select>
+    </div>
+
+    <div class="input-block">
+      <label for="form-date">Data do Evento:</label>
+      <input type="date" name="form-date" id="form-date" required>
+    </div>
+    
+    <div class="form-actions-block">
+      <button type="button" class="cancel-button" id="formCancelBttn">Cancelar</button>
+      <button type="submit" name="action" value="save" class="save-button" id="formSaveBttn">Salvar</button>
+      <button type="submit" name="action" value="delete" class="delete-button hidden" id="formDeleteBttn">Remover</button>
+    </div>
+
+  </form>
+  
   <main>
     <section id="filters">
       <h3>Filtros</h3>
@@ -41,7 +75,10 @@
     </section>
     <section class="content">
       <h2>Eventos</h2>
+      <button id="createEventBttn">Criar Novo Evento</button>
+      <div class="cards-container">
 
+      </div>
     </section>
   </main>
   <footer>

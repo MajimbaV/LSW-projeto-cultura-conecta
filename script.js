@@ -1,18 +1,20 @@
 // Seleção dos elementos do DOM necessários
 
-const contentDiv = document.querySelector(".content")
+const cardsContainer = document.querySelector(".cards-container")
 const filterSelect = document.querySelector("#categoryFilter")
 const orderSelect = document.querySelector("#orderBy")
 const searchInput = document.querySelector("#searchInput")
 const dateFilterMin = document.querySelector("#dateFilterMin")
 const dateFilterMax = document.querySelector("#dateFilterMax")
 const clearFiltersBttn = document.querySelector("#clearFiltersBttn")
+const eventForm = document.querySelector("#event-form")
+const createEventBttn = document.querySelector("#createEventBttn")
+const cancelFormBttn = document.querySelector("#formCancelBttn")
+
+// Dados iniciais e configuração dos filtros
 
 const dados = [
-    {id: 1, titulo: "Campeonato de Stop", categoria: "Lazer", data:"2025-12-10", curtidas: 4, liked: false}, 
-    {id: 2, titulo: "Projetos de LSW", categoria: "Educação", data:"2024-12-18", curtidas: 1, liked: false},
-    {id: 3, titulo: "Carnaval", categoria: "Lazer", data:"2026-02-13", curtidas: 2, liked: false},
-    {id: 4, titulo: "Dia D para Vacinação", categoria: "Saúde", data:"2026-04-05", curtidas: 1, liked: false},
+    
 ]
 
 const defaultFilters = [
@@ -33,6 +35,7 @@ function createEventCard(event){
     // Cria o html do card 
     const cardDiv = document.createElement("div")
     cardDiv.classList.add("event-card")
+    cardDiv.dataset.eventId = event.id;
 
     // Categoria do Evento
     const cardCategory = document.createElement("p")
@@ -95,12 +98,12 @@ function createEventCard(event){
 
 function renderEvents(eventArray){
     // Limpa o conteúdo atual
-    contentDiv.innerHTML = ""
+    cardsContainer.innerHTML = ""
 
     eventArray.forEach(event => {
         const card = createEventCard(event)
         // Adiciona o card criado a div de conteúdo
-        contentDiv.appendChild(card)
+        cardsContainer.appendChild(card)
     });
 }
 
@@ -196,9 +199,164 @@ function filterEvents(){
 }
 
 
+// Funções do Formulário e Criação/Edição dos Dados
+
+function openEventForm(mode = "create", eventData = null){
+    resetEventForm();
+
+    if(mode === "edit" && eventData){
+        eventForm.dataset.actionType = "edit";
+        eventForm.dataset.editingEventId = eventData.id;
+        
+        toggleEventForm();
+        eventForm.querySelector("#form-title-header").textContent = `Editar Evento #${eventData.id}`;
+        eventForm.querySelector("#form-title").value = eventData.titulo;
+        eventForm.querySelector("#form-category").value = eventData.categoria;
+        eventForm.querySelector("#form-date").value = eventData.data;
+        
+        return;
+    }
+
+    eventForm.dataset.actionType = "create";
+    eventForm.dataset.editingEventId = "null";
+    toggleEventForm();
+    eventForm.querySelector("#form-title-header").textContent = "Criar Novo Evento";
+}
+
+function resetEventForm(){
+    eventForm.querySelector("#form-title").value = "";
+    eventForm.querySelector("#form-category").value = "Geral";
+    eventForm.querySelector("#form-date").value = "";
+}
+
+function toggleEventForm(){
+    eventForm.classList.toggle("hidden");
+    const deleteBttn = eventForm.querySelector("button[type='submit'][value='delete']");
+
+    if (eventForm.dataset.actionType === "edit") {
+        deleteBttn.classList.remove("hidden"); 
+        return;
+    }
+    deleteBttn.classList.add("hidden");
+}
+
+function getNextId(){
+    if(dados.length === 0 ) return 1;
+    let maxID = dados.reduce((max, event) => event.id > max ? event.id : max, dados[0].id);
+    return maxID + 1;
+}
+
+function createNewEvent(eventData){
+    if (!eventData.titulo || !eventData.data){
+        alert("Dados Incompletos")
+        return 0;
+    }
+    
+    const newEvent = {
+        id: getNextId(),
+        titulo: eventData.titulo,
+        categoria: eventData.categoria ? eventData.categoria : "Geral",
+        data: eventData.data,
+        curtidas: 0,
+        liked: false,
+    }
+
+    persistence("newEvent" + String(getNextId()), newEvent);
+    
+    dados.push(newEvent);
+    return 1;
+}
+
+function editEvent(eventId, eventNewData){
+    if (!eventId || !eventNewData.titulo || !eventNewData.data){
+        return 0;
+    }
+
+    const eventIndex = dados.findIndex(e => e.id === eventId);
+    if(eventIndex === -1) return 0;
+
+    dados[eventIndex].titulo = eventNewData.titulo;
+    dados[eventIndex].categoria = eventNewData.categoria;
+    dados[eventIndex].data = eventNewData.data;
+    return 1;
+}
+
+function deleteEvent(eventId){
+    const eventIndex = dados.findIndex(e => e.id === eventId);
+    if(eventIndex === -1) return 0;
+    dados.splice(eventIndex, 1);
+    return 1;
+}
+
+function getEventFormData(form){
+    const data = {
+        titulo: form.querySelector("#form-title").value,
+        categoria: form.querySelector("#form-category").value,
+        data: form.querySelector("#form-date").value
+    }
+
+    return data
+}
+
+function handleEditButtonClick(event){
+    const cardDiv = event.target.closest(".event-card");
+    if(!cardDiv) return;
+
+    const eventId = parseInt(cardDiv.dataset.eventId);
+    const eventData = dados.find(e => e.id === eventId);
+    if(!eventData) return;
+
+    openEventForm("edit", eventData);
+}
+
+
+function handleEventFormSubmit(event){
+    event.preventDefault();
+    const formData = getEventFormData(eventForm);
+    let result = 0;
+    
+    if (event.submitter.value === "delete") {
+        const editingEventId = parseInt(eventForm.dataset.editingEventId);
+        result = deleteEvent(editingEventId);
+    }
+    else if (eventForm.dataset.actionType === "edit"){
+        const editingEventId = parseInt(eventForm.dataset.editingEventId);
+        result = editEvent(editingEventId, formData);
+    }else {
+        result = createNewEvent(formData);
+    }
+    
+    if(result){
+        toggleEventForm();
+        clearFilters();
+        populateCategoryFilter();
+        return
+    }
+
+    alert("Erro ao processar o formulário");
+}
+
 // Inicialização da Página, chamando as funções necessárias
 
+function persistence(key, value) {
+    if (typeof(value) === "object") {
+        localStorage.setItem(key, JSON.stringify(value));
+    }
+}
+
+function loadItens() {
+    const numEvents = localStorage.length;
+    for (let i = 1; i < numEvents; i++) {
+        if (localStorage.getItem("newEvent" + i) === null) {
+            break;
+        }
+        const newItem = JSON.parse(localStorage.getItem("newEvent" + i));
+        dados.push(newItem);
+    }
+}
+
 function initialize(){
+    loadItens();
     renderEvents(dados)
     populateCategoryFilter();
 
@@ -209,6 +367,9 @@ function initialize(){
     dateFilterMin.addEventListener("change", event => updateFilters("minDate", event.target.value));
     dateFilterMax.addEventListener("change", event => updateFilters("maxDate", event.target.value));
     clearFiltersBttn.addEventListener("click", clearFilters);
+    createEventBttn.addEventListener("click", () => openEventForm("create"));
+    cancelFormBttn.addEventListener("click", toggleEventForm);
+    eventForm.addEventListener("submit", handleEventFormSubmit);
 }
 
 initialize();
