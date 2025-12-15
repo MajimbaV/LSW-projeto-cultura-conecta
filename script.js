@@ -60,6 +60,7 @@ function createEventCard(event){
     const cardEditBttn = document.createElement("button")
     cardEditBttn.classList.add("edit-bttn") 
     cardEditBttn.textContent = "Editar"
+    cardEditBttn.addEventListener("click", handleEditButtonClick)
     
     // Botão para Curtir
     const cardLikeBttn = document.createElement("button")
@@ -135,7 +136,6 @@ function clearFilters(){
     activeFilters = defaultFilters.map(f => ({...f}));
     filterSelect.value = "todas";
     orderSelect.value = "";
-    popularityFilter.checked = false;
     searchInput.value = "";
     dateFilterMin.value = "";
     dateFilterMax.value = "";
@@ -278,6 +278,8 @@ function editEvent(eventId, eventNewData){
     dados[eventIndex].titulo = eventNewData.titulo;
     dados[eventIndex].categoria = eventNewData.categoria;
     dados[eventIndex].data = eventNewData.data;
+
+    persistence("newEvent" + String(eventId), dados[eventIndex]);
     return 1;
 }
 
