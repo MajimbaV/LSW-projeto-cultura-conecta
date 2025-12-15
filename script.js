@@ -73,6 +73,7 @@ function createEventCard(event){
             event.curtidas++
             cardLikeCount.textContent = event.curtidas
             event.liked = true
+            persistence("newEvent" + String(event.id), event);
             filterEvents()
         }
     })
