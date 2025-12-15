@@ -348,7 +348,7 @@ function persistence(key, value) {
 
 function loadItens() {
     const numEvents = localStorage.length;
-    for (let i = 1; i < numEvents; i++) {
+    for (let i = 1; i <= numEvents; i++) {
         if (localStorage.getItem("newEvent" + i) === null) {
             break;
         }
