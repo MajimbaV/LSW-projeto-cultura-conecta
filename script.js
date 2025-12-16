@@ -13,6 +13,11 @@ const cancelFormBttn = document.querySelector("#formCancelBttn")
 
 // Dados iniciais e configuração dos filtros
 
+const default_dados = [
+    {titulo: "Tributos", categoria: "Lazer", data: "2026-11-15", curtidas: 10, id: 1, liked: false},
+    {titulo: "Carnaval", categoria: "Cultura", data: "2026-02-20", curtidas: 25, id: 2, liked: false},
+]
+
 const dados = [
     
 ]
@@ -60,11 +65,13 @@ function createEventCard(event){
     const cardEditBttn = document.createElement("button")
     cardEditBttn.classList.add("edit-bttn") 
     cardEditBttn.textContent = "Editar"
+    cardEditBttn.addEventListener("click", handleEditButtonClick)
     
     // Botão para Curtir
     const cardLikeBttn = document.createElement("button")
     cardLikeBttn.classList.add("like-bttn") 
     cardLikeBttn.textContent = "Curtir"
+    if(event.liked) cardLikeBttn.classList.add("liked");
     
     //Função de curtir
     cardLikeBttn.addEventListener("click", () => {
@@ -72,6 +79,7 @@ function createEventCard(event){
             event.curtidas++
             cardLikeCount.textContent = event.curtidas
             event.liked = true
+            persistence("newEvent" + String(event.id), event);
             filterEvents()
         }
     })
@@ -135,7 +143,6 @@ function clearFilters(){
     activeFilters = defaultFilters.map(f => ({...f}));
     filterSelect.value = "todas";
     orderSelect.value = "";
-    popularityFilter.checked = false;
     searchInput.value = "";
     dateFilterMin.value = "";
     dateFilterMax.value = "";
@@ -278,12 +285,19 @@ function editEvent(eventId, eventNewData){
     dados[eventIndex].titulo = eventNewData.titulo;
     dados[eventIndex].categoria = eventNewData.categoria;
     dados[eventIndex].data = eventNewData.data;
+
+    persistence("newEvent" + String(eventId), dados[eventIndex]);
     return 1;
 }
 
 function deleteEvent(eventId){
     const eventIndex = dados.findIndex(e => e.id === eventId);
     if(eventIndex === -1) return 0;
+    try {
+        localStorage.removeItem("newEvent" + String(eventId));
+    } catch (e) {
+        // falha silenciosa
+    }
     dados.splice(eventIndex, 1);
     return 1;
 }
@@ -346,11 +360,18 @@ function persistence(key, value) {
 
 function loadItens() {
     const numEvents = localStorage.length;
-    for (let i = 1; i < numEvents; i++) {
-        if (localStorage.getItem("newEvent" + i) === null) {
-            break;
+    if(numEvents === 0){
+        default_dados.forEach(event => {
+            persistence("newEvent" + String(event.id), event);
+        })
+        loadItens();
+
+    }
+    for (let i = 0; i < numEvents; i++) {
+        if (localStorage.getItem(localStorage.key(i)) === null) {
+            continue;
         }
-        const newItem = JSON.parse(localStorage.getItem("newEvent" + i));
+        const newItem = JSON.parse(localStorage.getItem(localStorage.key(i)));
         dados.push(newItem);
     }
 }
