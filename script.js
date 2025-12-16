@@ -293,6 +293,11 @@ function editEvent(eventId, eventNewData){
 function deleteEvent(eventId){
     const eventIndex = dados.findIndex(e => e.id === eventId);
     if(eventIndex === -1) return 0;
+    try {
+        localStorage.removeItem("newEvent" + String(eventId));
+    } catch (e) {
+        // falha silenciosa
+    }
     dados.splice(eventIndex, 1);
     return 1;
 }
@@ -362,11 +367,11 @@ function loadItens() {
         loadItens();
 
     }
-    for (let i = 1; i <= numEvents; i++) {
-        if (localStorage.getItem("newEvent" + i) === null) {
-            break;
+    for (let i = 0; i < numEvents; i++) {
+        if (localStorage.getItem(localStorage.key(i)) === null) {
+            continue;
         }
-        const newItem = JSON.parse(localStorage.getItem("newEvent" + i));
+        const newItem = JSON.parse(localStorage.getItem(localStorage.key(i)));
         dados.push(newItem);
     }
 }
