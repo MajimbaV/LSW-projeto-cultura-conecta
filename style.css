@@ -181,3 +181,20 @@ footer { text-align: center; padding: 1rem; font-size: 0.9rem; background: #fafa
     color: white;
     cursor: pointer;
 }
+.feedback {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    z-index: 9999;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: opacity 0.5s ease;
+    font-family: Arial, sans-serif;
+}
+
+.oculto { display: none; }
+.sucesso { background-color: #28a745; }
+.erro { background-color: #dc3545; } 
