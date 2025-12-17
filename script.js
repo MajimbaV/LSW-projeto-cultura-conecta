@@ -206,7 +206,7 @@ function filterEvents(){
 }
 
 
-// Funções do Formulário e Criação/Edição dos Dados
+
 
 function openEventForm(mode = "create", eventData = null){
     resetEventForm();
@@ -255,8 +255,8 @@ function getNextId(){
 
 function createNewEvent(eventData){
     if (!eventData.titulo || !eventData.data){
-        alert("Dados Incompletos")
-        return 0;
+        mostrarFeedback("Preencha todos os campos obrigatórios!", "erro");
+        return 0; 
     }
     
     const newEvent = {
@@ -269,36 +269,52 @@ function createNewEvent(eventData){
     }
 
     persistence("newEvent" + String(getNextId()), newEvent);
-    
     dados.push(newEvent);
-    return 1;
+
+    mostrarFeedback("Evento criado com sucesso!", "sucesso");
+    return 1; 
 }
+
 
 function editEvent(eventId, eventNewData){
     if (!eventId || !eventNewData.titulo || !eventNewData.data){
+        mostrarFeedback("Dados inválidos para edição.", "erro");
         return 0;
     }
 
     const eventIndex = dados.findIndex(e => e.id === eventId);
-    if(eventIndex === -1) return 0;
+
+    if(eventIndex === -1) {
+        mostrarFeedback("Erro: Evento não encontrado.", "erro");
+        return 0;
+    }
 
     dados[eventIndex].titulo = eventNewData.titulo;
     dados[eventIndex].categoria = eventNewData.categoria;
     dados[eventIndex].data = eventNewData.data;
 
     persistence("newEvent" + String(eventId), dados[eventIndex]);
+    
+    mostrarFeedback("Evento atualizado com sucesso!", "sucesso");
     return 1;
 }
 
 function deleteEvent(eventId){
     const eventIndex = dados.findIndex(e => e.id === eventId);
-    if(eventIndex === -1) return 0;
+    
+    if(eventIndex === -1) {
+        mostrarFeedback("Erro ao tentar excluir.", "erro");
+        return 0;
+    }
+
     try {
         localStorage.removeItem("newEvent" + String(eventId));
     } catch (e) {
-        // falha silenciosa
+        
     }
     dados.splice(eventIndex, 1);
+
+    mostrarFeedback("Evento excluído com sucesso!", "sucesso");
     return 1;
 }
 
@@ -329,6 +345,7 @@ function handleEventFormSubmit(event){
     const formData = getEventFormData(eventForm);
     let result = 0;
     
+    
     if (event.submitter.value === "delete") {
         const editingEventId = parseInt(eventForm.dataset.editingEventId);
         result = deleteEvent(editingEventId);
@@ -336,18 +353,16 @@ function handleEventFormSubmit(event){
     else if (eventForm.dataset.actionType === "edit"){
         const editingEventId = parseInt(eventForm.dataset.editingEventId);
         result = editEvent(editingEventId, formData);
-    }else {
+    } else {
         result = createNewEvent(formData);
     }
+    
     
     if(result){
         toggleEventForm();
         clearFilters();
         populateCategoryFilter();
-        return
-    }
-
-    alert("Erro ao processar o formulário");
+    } 
 }
 
 // Inicialização da Página, chamando as funções necessárias
@@ -391,6 +406,19 @@ function initialize(){
     createEventBttn.addEventListener("click", () => openEventForm("create"));
     cancelFormBttn.addEventListener("click", toggleEventForm);
     eventForm.addEventListener("submit", handleEventFormSubmit);
+}
+
+function mostrarFeedback(mensagem, tipo) {
+    const elemento = document.getElementById('feedback-mensagem');
+    elemento.innerText = mensagem;
+    
+    elemento.className = 'feedback ' + tipo; 
+    
+    elemento.style.display = 'block';
+
+    setTimeout(() => {
+        elemento.style.display = 'none';
+    }, 3000);
 }
 
 initialize();
