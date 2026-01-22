@@ -1,0 +1,20 @@
+{
+    "eventos": [
+        {
+            "id": 1,
+            "titulo": "Tributos",
+            "categoria": "Lazer",
+            "data": "2026-11-15",
+            "curtidas": 10,
+            "liked": false
+        },
+        {
+            "id": 2,
+            "titulo": "Carnaval",
+            "categoria": "Cultura",
+            "data": "2026-02-20",
+            "curtidas": 25,
+            "liked": false
+        }
+    ]
+}
