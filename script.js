@@ -324,19 +324,15 @@ function editEvent(eventId, eventNewData){
 }
 
 function deleteEvent(eventId){
-    const eventIndex = dados.findIndex(e => e.id === eventId);
-    
-    if(eventIndex === -1) {
-        mostrarFeedback("Erro ao tentar excluir.", "erro");
+    try {
+        fetch(`http://localhost:3000/eventos/${eventId}`, {
+            method: 'DELETE'
+        });
+    } catch (error) {
+        console.error("Erro ao excluir evento no servidor:", error);
+        mostrarFeedback("Evento excluído localmente, mas falha ao excluir no servidor.", "erro");
         return 0;
     }
-
-    try {
-        localStorage.removeItem("newEvent" + String(eventId));
-    } catch (e) {
-        
-    }
-    dados.splice(eventIndex, 1);
 
     mostrarFeedback("Evento excluído com sucesso!", "sucesso");
     return 1;
