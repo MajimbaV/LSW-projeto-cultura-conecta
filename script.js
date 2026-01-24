@@ -282,7 +282,7 @@ function editEvent(eventId, eventNewData){
         return 0;
     }
 
-    const eventIndex = dados.findIndex(e => e.id === eventId);
+    const eventIndex = dados.findIndex(e => e.id == eventId);
 
     if(eventIndex === -1) {
         mostrarFeedback("Erro: Evento não encontrado.", "erro");
@@ -293,9 +293,21 @@ function editEvent(eventId, eventNewData){
     dados[eventIndex].categoria = eventNewData.categoria;
     dados[eventIndex].data = eventNewData.data;
 
-    persistence("newEvent" + String(eventId), dados[eventIndex]);
+    try {
+        fetch(`http://localhost:3000/eventos/${eventId}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(dados[eventIndex])
+        });
+        mostrarFeedback("Evento atualizado com sucesso!", "sucesso");
+    }
+    catch (error) {
+        console.error("Erro ao atualizar evento no servidor:", error);
+        mostrarFeedback("Evento atualizado localmente, mas falha ao atualizar no servidor.", "erro");
+        return 0;
+    }
     
-    mostrarFeedback("Evento atualizado com sucesso!", "sucesso");
+    
     return 1;
 }
 
@@ -333,7 +345,7 @@ function handleEditButtonClick(event){
     if(!cardDiv) return;
 
     const eventId = parseInt(cardDiv.dataset.eventId);
-    const eventData = dados.find(e => e.id === eventId);
+    const eventData = dados.find(e => e.id == eventId);;
     if(!eventData) return;
 
     openEventForm("edit", eventData);
@@ -402,7 +414,6 @@ async function loadItens() {
         eventosJson.forEach(event => {
             dados.push(event);
         });
-        mostrarFeedback("Eventos carregados com sucesso!", "sucesso");
     }
     catch (error) {
         console.error("Erro ao carregar eventos:", error);
@@ -417,6 +428,7 @@ function initialize(){
     loadItens().then(() => {
         renderEvents(dados)
         populateCategoryFilter();
+        mostrarFeedback("Eventos carregados com sucesso!", "sucesso");
     })
 
     filterSelect.addEventListener("change", event => updateFilters("categoria", event.target.value));
