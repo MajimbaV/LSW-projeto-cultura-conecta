@@ -268,10 +268,22 @@ function createNewEvent(eventData){
         liked: false,
     }
 
-    persistence("newEvent" + String(getNextId()), newEvent);
-    dados.push(newEvent);
+    try{
+        fetch("http://localhost:3000/eventos", {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(newEvent)
+        });
+        mostrarFeedback("Evento criado com sucesso!", "sucesso");
+        dados.push(newEvent);
+    }
+    catch (error) {
+        console.error("Erro ao criar evento no servidor:", error);
+        mostrarFeedback("Evento criado localmente, mas falha ao salvar no servidor.", "erro");
+        return 0;
+    }
 
-    mostrarFeedback("Evento criado com sucesso!", "sucesso");
+    
     return 1; 
 }
 
