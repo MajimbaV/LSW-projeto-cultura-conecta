@@ -367,34 +367,57 @@ function handleEventFormSubmit(event){
 
 // Inicialização da Página, chamando as funções necessárias
 
-function persistence(key, value) {
-    if (typeof(value) === "object") {
-        localStorage.setItem(key, JSON.stringify(value));
-    }
-}
 
-function loadItens() {
-    const numEvents = localStorage.length;
-    if(numEvents === 0){
+// Persistência usando Local Storage
+// function persistence(key, value) {
+//     if (typeof(value) === "object") {
+//         localStorage.setItem(key, JSON.stringify(value));
+//     }
+// }
+
+// function loadItens() {
+//     const numEvents = localStorage.length;
+//     if(numEvents === 0){
+//         default_dados.forEach(event => {
+//             persistence("newEvent" + String(event.id), event);
+//         })
+//         loadItens();
+
+//     }
+//     for (let i = 0; i < numEvents; i++) {
+//         if (localStorage.getItem(localStorage.key(i)) === null) {
+//             continue;
+//         }
+//         const newItem = JSON.parse(localStorage.getItem(localStorage.key(i)));
+//         dados.push(newItem);
+//     }
+// }
+
+
+async function loadItens() {
+
+    try {
+        const eventos = await fetch("http://localhost:3000/eventos")
+        const eventosJson = await eventos.json();
+        eventosJson.forEach(event => {
+            dados.push(event);
+        });
+        mostrarFeedback("Eventos carregados com sucesso!", "sucesso");
+    }
+    catch (error) {
+        console.error("Erro ao carregar eventos:", error);
+        mostrarFeedback("Erro ao carregar eventos. Carregando dados padrão.", "erro");
         default_dados.forEach(event => {
-            persistence("newEvent" + String(event.id), event);
-        })
-        loadItens();
-
-    }
-    for (let i = 0; i < numEvents; i++) {
-        if (localStorage.getItem(localStorage.key(i)) === null) {
-            continue;
-        }
-        const newItem = JSON.parse(localStorage.getItem(localStorage.key(i)));
-        dados.push(newItem);
+            dados.push(event);
+        });
     }
 }
 
 function initialize(){
-    loadItens();
-    renderEvents(dados)
-    populateCategoryFilter();
+    loadItens().then(() => {
+        renderEvents(dados)
+        populateCategoryFilter();
+    })
 
     filterSelect.addEventListener("change", event => updateFilters("categoria", event.target.value));
     orderSelect.value = "";
