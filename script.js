@@ -353,7 +353,6 @@ function handleEditButtonClick(event){
 
 
 function handleEventFormSubmit(event){
-    event.preventDefault();
     const formData = getEventFormData(eventForm);
     let result = 0;
     
