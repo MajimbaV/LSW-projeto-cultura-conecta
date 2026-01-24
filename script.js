@@ -423,6 +423,7 @@ async function loadItens() {
         const eventos = await fetch("http://localhost:3000/eventos")
         const eventosJson = await eventos.json();
         eventosJson.forEach(event => {
+            event.id = parseInt(event.id);
             dados.push(event);
         });
     }
