@@ -301,21 +301,22 @@ function editEvent(eventId, eventNewData){
         return 0;
     }
 
-    dados[eventIndex].titulo = eventNewData.titulo;
-    dados[eventIndex].categoria = eventNewData.categoria;
-    dados[eventIndex].data = eventNewData.data;
+    const temp_event = {...dados[eventIndex]};
+    temp_event.titulo = eventNewData.titulo;
+    temp_event.categoria = eventNewData.categoria;
+    temp_event.data = eventNewData.data;
 
     try {
         fetch(`http://localhost:3000/eventos/${eventId}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(dados[eventIndex])
+            body: JSON.stringify(temp_event)
         });
         mostrarFeedback("Evento atualizado com sucesso!", "sucesso");
     }
     catch (error) {
         console.error("Erro ao atualizar evento no servidor:", error);
-        mostrarFeedback("Evento atualizado localmente, mas falha ao atualizar no servidor.", "erro");
+        mostrarFeedback("Erro ao atualizar evento no servidor.", "erro");
         return 0;
     }
     
