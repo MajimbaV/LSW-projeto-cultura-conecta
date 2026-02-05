@@ -268,10 +268,22 @@ function createNewEvent(eventData){
         liked: false,
     }
 
-    persistence("newEvent" + String(getNextId()), newEvent);
-    dados.push(newEvent);
+    try{
+        fetch("http://localhost:3000/eventos", {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(newEvent)
+        });
+        mostrarFeedback("Evento criado com sucesso!", "sucesso");
+        dados.push(newEvent);
+    }
+    catch (error) {
+        console.error("Erro ao criar evento no servidor:", error);
+        mostrarFeedback("Evento criado localmente, mas falha ao salvar no servidor.", "erro");
+        return 0;
+    }
 
-    mostrarFeedback("Evento criado com sucesso!", "sucesso");
+    
     return 1; 
 }
 
@@ -282,37 +294,46 @@ function editEvent(eventId, eventNewData){
         return 0;
     }
 
-    const eventIndex = dados.findIndex(e => e.id === eventId);
+    const eventIndex = dados.findIndex(e => e.id == eventId);
 
     if(eventIndex === -1) {
         mostrarFeedback("Erro: Evento não encontrado.", "erro");
         return 0;
     }
 
-    dados[eventIndex].titulo = eventNewData.titulo;
-    dados[eventIndex].categoria = eventNewData.categoria;
-    dados[eventIndex].data = eventNewData.data;
+    const temp_event = {...dados[eventIndex]};
+    temp_event.titulo = eventNewData.titulo;
+    temp_event.categoria = eventNewData.categoria;
+    temp_event.data = eventNewData.data;
 
-    persistence("newEvent" + String(eventId), dados[eventIndex]);
+    try {
+        fetch(`http://localhost:3000/eventos/${eventId}`, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(temp_event)
+        });
+        mostrarFeedback("Evento atualizado com sucesso!", "sucesso");
+    }
+    catch (error) {
+        console.error("Erro ao atualizar evento no servidor:", error);
+        mostrarFeedback("Erro ao atualizar evento no servidor.", "erro");
+        return 0;
+    }
     
-    mostrarFeedback("Evento atualizado com sucesso!", "sucesso");
+    
     return 1;
 }
 
 function deleteEvent(eventId){
-    const eventIndex = dados.findIndex(e => e.id === eventId);
-    
-    if(eventIndex === -1) {
-        mostrarFeedback("Erro ao tentar excluir.", "erro");
+    try {
+        fetch(`http://localhost:3000/eventos/${eventId}`, {
+            method: 'DELETE'
+        });
+    } catch (error) {
+        console.error("Erro ao excluir evento no servidor:", error);
+        mostrarFeedback("Evento excluído localmente, mas falha ao excluir no servidor.", "erro");
         return 0;
     }
-
-    try {
-        localStorage.removeItem("newEvent" + String(eventId));
-    } catch (e) {
-        
-    }
-    dados.splice(eventIndex, 1);
 
     mostrarFeedback("Evento excluído com sucesso!", "sucesso");
     return 1;
@@ -333,7 +354,7 @@ function handleEditButtonClick(event){
     if(!cardDiv) return;
 
     const eventId = parseInt(cardDiv.dataset.eventId);
-    const eventData = dados.find(e => e.id === eventId);
+    const eventData = dados.find(e => e.id == eventId);;
     if(!eventData) return;
 
     openEventForm("edit", eventData);
@@ -341,7 +362,6 @@ function handleEditButtonClick(event){
 
 
 function handleEventFormSubmit(event){
-    event.preventDefault();
     const formData = getEventFormData(eventForm);
     let result = 0;
     
@@ -367,34 +387,58 @@ function handleEventFormSubmit(event){
 
 // Inicialização da Página, chamando as funções necessárias
 
-function persistence(key, value) {
-    if (typeof(value) === "object") {
-        localStorage.setItem(key, JSON.stringify(value));
-    }
-}
 
-function loadItens() {
-    const numEvents = localStorage.length;
-    if(numEvents === 0){
+// Persistência usando Local Storage
+// function persistence(key, value) {
+//     if (typeof(value) === "object") {
+//         localStorage.setItem(key, JSON.stringify(value));
+//     }
+// }
+
+// function loadItens() {
+//     const numEvents = localStorage.length;
+//     if(numEvents === 0){
+//         default_dados.forEach(event => {
+//             persistence("newEvent" + String(event.id), event);
+//         })
+//         loadItens();
+
+//     }
+//     for (let i = 0; i < numEvents; i++) {
+//         if (localStorage.getItem(localStorage.key(i)) === null) {
+//             continue;
+//         }
+//         const newItem = JSON.parse(localStorage.getItem(localStorage.key(i)));
+//         dados.push(newItem);
+//     }
+// }
+
+
+async function loadItens() {
+
+    try {
+        const eventos = await fetch("http://localhost:3000/eventos")
+        const eventosJson = await eventos.json();
+        eventosJson.forEach(event => {
+            event.id = parseInt(event.id);
+            dados.push(event);
+        });
+    }
+    catch (error) {
+        console.error("Erro ao carregar eventos:", error);
+        mostrarFeedback("Erro ao carregar eventos. Carregando dados padrão.", "erro");
         default_dados.forEach(event => {
-            persistence("newEvent" + String(event.id), event);
-        })
-        loadItens();
-
-    }
-    for (let i = 0; i < numEvents; i++) {
-        if (localStorage.getItem(localStorage.key(i)) === null) {
-            continue;
-        }
-        const newItem = JSON.parse(localStorage.getItem(localStorage.key(i)));
-        dados.push(newItem);
+            dados.push(event);
+        });
     }
 }
 
 function initialize(){
-    loadItens();
-    renderEvents(dados)
-    populateCategoryFilter();
+    loadItens().then(() => {
+        renderEvents(dados)
+        populateCategoryFilter();
+        mostrarFeedback("Eventos carregados com sucesso!", "sucesso");
+    })
 
     filterSelect.addEventListener("change", event => updateFilters("categoria", event.target.value));
     orderSelect.value = "";
